@@ -1,24 +1,27 @@
 <template>
+<div >
   <v-row
     justify="center"
     align="center"
     class="register-height gradient-background-color"
+    
   >
-    <v-col cols="12">
-      <h1 class="text-center text-h3 font-weight-black" >Patient Registration</h1>
+ 
+    <v-col cols="12" style="margin-bottom:-8rem">
+      <h1 class="text-center text-h3 font-weight-black"  style="color:black" >Patient Registration</h1>
     </v-col>
 
     <v-progress-circular
       :size="50"
-      color="primary"
+      color="black"
       indeterminate
       v-if="showLoader"
       >Signing In</v-progress-circular
     >
-    <v-card elevation="2" min-width="50vw" class="py-2" v-else>
+    <v-card elevation="2" min-width="30vw" class="py-2" v-else style="background:white ;padding-left:1.5rem;padding-right:1.5rem ; border-radius:1rem">
       <v-row class="mx-1 my">
-        <v-col>
-          <v-text-field label="Name" outlined v-model="name"></v-text-field>
+        <v-col style="margin-top:2rem">
+          <v-text-field label="Name" outlined v-model="name" ></v-text-field>
         </v-col>
       </v-row>
       <v-row class="mx-1 my">
@@ -39,7 +42,7 @@
           ></v-text-field>
         </v-col>
         <v-col>
-          <v-radio-group v-model="gender" row label="Gender">
+          <v-radio-group v-model="gender" row label="Gender" >
             <v-radio label="Male" value="male"></v-radio>
             <v-radio label="Female" value="female"></v-radio>
             <v-radio label="Other" value="other"></v-radio>
@@ -85,17 +88,18 @@
           <v-btn
             x-large
             outlined
-            rounded
+            curved
             color="red"
             class="font-weight-bold mr-4"
             @click="$router.go(-1)"
             ><v-icon> mdi-arrow-left </v-icon>Back</v-btn
           >
           <v-btn
+          style="background:#ff4742"
             x-large
             outlined
-            rounded
-            color="#AB47BC"
+            curved
+            color="white"
             class="font-weight-bold"
             @click="register"
             ><v-icon> mdi-lead-pencil </v-icon>Register</v-btn
@@ -104,10 +108,11 @@
       </v-row>
     </v-card>
   </v-row>
+  </div>
 </template>
 <script>
 //import FooterComponent from "../components/FooterComponent.vue";
-import { registerPatient, generatePatientID } from "../firebase/auth.js";
+import { registerPatient} from "../firebase/auth.js";
 export default {
   name: "RegistrationView",
   data: () => ({
@@ -145,9 +150,7 @@ export default {
     register() {
       if (this.canRegister) {
         console.log("Can Register");
-        return generatePatientID().then((res) => {
-          console.log(res);
-          return registerPatient({
+                  return registerPatient({
             name: this.name,
             surname: this.surname,
             gender: this.gender,
@@ -156,11 +159,10 @@ export default {
             age: this.age,
             email: this.email,
             pinCode: this.pinCode,
-            patientID: res,
           }).then(() => {
             this.$router.push("/patient");
           });
-        });
+       
       }
       alert("Cannot Register, Missing Fields");
     },
