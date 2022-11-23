@@ -5,10 +5,21 @@
       <v-spacer />
     </v-app-bar>
     <v-col cols="8" class="d-flex justify-center align-center"
-      ><h1 class="text-h2 font-weight-normal">Brain Tumor Detection</h1></v-col
+      ><h1 class="heading">Automated Tumor Detection</h1></v-col
     >
-    <v-col cols="8" class="d-flex justify-space-around align-center"
-      ><v-btn x-large outlined class="text-h4 font-weight-regular"
+    <v-col cols="8" class="d-flex justify-space-around align-center buttons"
+      ><v-btn
+        x-large
+        outlined
+        class="text-h4 font-weight-regular"
+        style="
+              background: #ff4742;
+              margin-right: 4rem;
+              border-radius: 0.5rem;
+              border: solid black;
+              padding: 3rem;
+              font-size: 1.6rem;
+              color: white;"
         >Register</v-btn
       >
       <v-menu bottom left offset-y>
@@ -18,14 +29,27 @@
             outlined
             v-bind="attrs"
             v-on="on"
-            class="text-h4 font-weight-regular"
+            class="button_login"
+            style="
+              background: #ff4742;
+              margin-right: 4rem;
+              border-radius: 0.5rem;
+              border: solid black;
+              padding: 3rem;
+              font-size: 1.6rem;
+              color: white;"
             >Login</v-btn
           >
         </template>
         <v-list>
           <v-list-item @click="doctorLogin">
             <v-list-item-title link>
-              <v-dialog v-model="dialog" persistent max-width="590">
+              <v-dialog
+                v-model="dialog"
+                persistent
+                max-width="400"
+                max-height="400"
+              >
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     outlined
@@ -38,23 +62,35 @@
                     Doctor
                   </v-btn>
                 </template>
-                <v-card class="">
-                  <v-card-title class="text-h5">Doctor Login </v-card-title>
+                <v-card class="" style="text-align: center">
+                  <v-card-title
+                    class="doctor_title"
+                    style="color: black; padding: 2rem; font-size: 1.5rem"
+                    >Doctor Login
+                  </v-card-title>
                   <v-card-text>
                     <v-text-field
-                      label="username"
+                      label="Username"
                       type="text"
                       v-model="doctorUsername"
                     ></v-text-field>
                     <v-text-field
-                      label="password"
+                      label="Password"
                       type="password"
                       v-model="doctorPassword"
                     ></v-text-field>
                   </v-card-text>
-                  <v-card-actions>
+                  <v-card-actions
+                    class="center"
+                    style="padding-bottom: 1rem; text-align: center"
+                  >
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="dialog = false">
+                    <v-btn
+                      color="white " 
+                      style="background: #FF4742; padding: 2rem"
+                      text
+                      @click="dialog = false"
+                    >
                       login
                     </v-btn>
                   </v-card-actions>
@@ -78,7 +114,7 @@
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-card-title class="text-h5"> Patient Login </v-card-title>
+                  <v-card-title class="text-h5" style="color: black; padding: 2rem; font-size: 1.5rem"> Patient Login </v-card-title>
                   <v-card-text>
                     <v-text-field
                       label="patientID"
@@ -93,7 +129,8 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="dialog1 = false">
+                    <v-btn color="white " 
+                      style="background: #FF4742; padding: 2rem" text @click="dialog1 = false">
                       Login
                     </v-btn>
                   </v-card-actions>
@@ -117,7 +154,7 @@
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-card-title class="text-h5">
+                  <v-card-title class="text-h5" style="color: black; padding: 2rem; font-size: 1.5rem">
                     Technician Login
                   </v-card-title>
                   <v-card-text>
@@ -134,7 +171,8 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="dialog2 = false">
+                    <v-btn color="white " 
+                      style="background: #FF4742; padding: 2rem" text @click="dialog2 = false">
                       Login
                     </v-btn>
                   </v-card-actions>
@@ -158,7 +196,7 @@
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-card-title class="text-h5"> Admin Login </v-card-title>
+                  <v-card-title class="text-h5" style="color: black; padding: 2rem; font-size: 1.5rem"> Admin Login </v-card-title>
                   <v-card-text>
                     <v-text-field
                       label="username"
@@ -173,7 +211,8 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" text @click="dialog3 = false">
+                    <v-btn color="white " 
+                      style="background: #FF4742; padding: 2rem" text @click="dialog3 = false">
                       Login
                     </v-btn>
                   </v-card-actions>
@@ -212,8 +251,29 @@ export default {
 };
 </script>
 <style>
+* {
+  color: white;
+}
+.heading {
+  font-size: 6rem;
+  font-weight: 300;
+  margin-top: 9rem;
+}
+.buttons {
+  margin-top: -20rem;
+}
+.button_login:hover: {
+  color: #232344;
+}
 .main-wrapper {
   height: 100vh;
+  background: black;
+}
+.doctor_title {
+  color: black;
+  padding: 1rem;
+  text-align: center;
+  font-size: 3rem;
 }
 .login-style {
   min-width: 500px;
