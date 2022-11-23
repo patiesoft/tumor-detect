@@ -9,20 +9,18 @@
     >
     <v-col cols="8" class="d-flex justify-space-around align-center buttons"
       ><v-btn
-       
         x-large
-       
         outlined
-       
         class="text-h4 font-weight-regular"
         style="
-              background: #ff4742;
-              margin-right: 4rem;
-              border-radius: 0.5rem;
-              border: solid black;
-              padding: 3rem;
-              font-size: 1.6rem;
-              color: white;"
+          background: #ff4742;
+          margin-right: 4rem;
+          border-radius: 0.5rem;
+          border: solid black;
+          padding: 3rem;
+          font-size: 1.6rem;
+          color: white;
+        "
         @click="$router.push('/patient-register')"
         >Register</v-btn
       >
@@ -41,19 +39,15 @@
               border: solid black;
               padding: 3rem;
               font-size: 1.6rem;
-              color: white;"
+              color: white;
+            "
             >Login</v-btn
           >
         </template>
         <v-list>
           <v-list-item @click="doctorLogin">
             <v-list-item-title link>
-              <v-dialog
-                v-model="dialog"
-                persistent
-                max-width="400"
-                max-height="400"
-              >
+              <v-dialog v-model="dialog" persistent max-width="1000">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     outlined
@@ -66,42 +60,57 @@
                     Doctor
                   </v-btn>
                 </template>
-                <v-card class="" style="text-align: center">
-                  <v-card-title
-                    class="doctor_title"
-                    style="color: black; padding: 2rem; font-size: 1.5rem"
-                    >Doctor Login
-                  </v-card-title>
-                  <v-card-text>
-                    <v-text-field
-                      label="Username"
-                      type="text"
-                      v-model="doctorUsername"
-                    ></v-text-field>
-                    <v-text-field
-                      label="Password"
-                      type="password"
-                      v-model="doctorPassword"
-                    ></v-text-field>
-                  </v-card-text>
-                  <v-card-actions
-                    class="center"
-                    style="padding-bottom: 1rem; text-align: center"
-                  >
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      color="white " 
-                      style="background: #FF4742; padding: 2rem"
-                      text
-                      @click="dialog = false"
-                    >
-                      login
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
+                <div style="display: flex">
+                  <div><img src="../assets/DoctorLoginImage.jpg" /></div>
+                  <div>
+                    <v-card class="" style="text-align: center">
+                      <v-card-title
+                        class="doctor_title"
+                        style="color: black; padding: 3.85rem; font-size: 2rem"
+                        >Doctor Login
+                      </v-card-title>
+                      <v-card-text>
+                        <v-text-field
+                          label="Username"
+                          type="text"
+                          v-model="doctorUsername"
+                        ></v-text-field>
+                        <v-text-field
+                          label="Password"
+                          type="password"
+                          v-model="doctorPassword"
+                        ></v-text-field>
+                      </v-card-text>
+                      <v-card-actions
+                        class="center"
+                        style="padding-bottom: 1rem; text-align: center"
+                      >
+                        <v-spacer></v-spacer>
+                        <v-spacer></v-spacer>
+                        <div
+                          style="
+                            text-align: center;
+                            padding: 3rem 6.3rem 3rem 6.5rem;
+                            border: none;
+                          "
+                        >
+                          <v-btn
+                            color="white "
+                            style="background: #ff4742; padding: 2rem"
+                            text
+                            @click="dialog = false"
+                          >
+                            login
+                          </v-btn>
+                        </div>
+                      </v-card-actions>
+                    </v-card>
+                  </div>
+                </div>
               </v-dialog>
             </v-list-item-title>
           </v-list-item>
+
           <v-list-item @click="patientLogin">
             <v-list-item-title link>
               <v-dialog v-model="dialog1" persistent max-width="590">
@@ -117,28 +126,43 @@
                     Patient
                   </v-btn>
                 </template>
-                <v-card>
-                  <v-card-title class="text-h5" style="color: black; padding: 2rem; font-size: 1.5rem"> Patient Login </v-card-title>
-                  <v-card-text>
-                    <v-text-field
-                      label="patientID"
-                      type="text"
-                      v-model="patientID"
-                    ></v-text-field>
-                    <v-text-field
-                      label="password"
-                      type="password"
-                      v-model="patientPassword"
-                    ></v-text-field>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="white " 
-                      style="background: #FF4742; padding: 2rem" text @click="dialog1 = false">
-                      Login
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
+
+                <div style="display: flex">
+                  <div><img src="../assets/DoctorLoginImage.jpg" /></div>
+                  <div>
+                    <v-card>
+                      <v-card-title
+                        class="text-h5"
+                        style="color: black; padding: 2rem; font-size: 1.5rem"
+                      >
+                        Patient Login
+                      </v-card-title>
+                      <v-card-text>
+                        <v-text-field
+                          label="patientID"
+                          type="text"
+                          v-model="patientID"
+                        ></v-text-field>
+                        <v-text-field
+                          label="password"
+                          type="password"
+                          v-model="patientPassword"
+                        ></v-text-field>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="white "
+                          style="background: #ff4742; padding: 2rem"
+                          text
+                          @click="dialog1 = false"
+                        >
+                          Login
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </div>
+                </div>
               </v-dialog>
             </v-list-item-title>
           </v-list-item>
@@ -157,30 +181,43 @@
                     Technician
                   </v-btn>
                 </template>
-                <v-card>
-                  <v-card-title class="text-h5" style="color: black; padding: 2rem; font-size: 1.5rem">
-                    Technician Login
-                  </v-card-title>
-                  <v-card-text>
-                    <v-text-field
-                      label="username"
-                      type="text"
-                      v-model="technicianUsername"
-                    ></v-text-field>
-                    <v-text-field
-                      label="password"
-                      type="password"
-                      v-model="technicianPassword"
-                    ></v-text-field>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="white " 
-                      style="background: #FF4742; padding: 2rem" text @click="dialog2 = false">
-                      Login
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
+
+                <div>
+                  <div><img src="../assets/logo.png" /></div>
+                  <div>
+                    <v-card>
+                      <v-card-title
+                        class="text-h5"
+                        style="color: black; padding: 2rem; font-size: 1.5rem"
+                      >
+                        Technician Login
+                      </v-card-title>
+                      <v-card-text>
+                        <v-text-field
+                          label="username"
+                          type="text"
+                          v-model="technicianUsername"
+                        ></v-text-field>
+                        <v-text-field
+                          label="password"
+                          type="password"
+                          v-model="technicianPassword"
+                        ></v-text-field>
+                      </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          color="white "
+                          style="background: #ff4742; padding: 2rem"
+                          text
+                          @click="dialog2 = false"
+                        >
+                          Login
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </div>
+                </div>
               </v-dialog>
             </v-list-item-title>
           </v-list-item>
@@ -200,7 +237,12 @@
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-card-title class="text-h5" style="color: black; padding: 2rem; font-size: 1.5rem"> Admin Login </v-card-title>
+                  <v-card-title
+                    class="text-h5"
+                    style="color: black; padding: 2rem; font-size: 1.5rem"
+                  >
+                    Admin Login
+                  </v-card-title>
                   <v-card-text>
                     <v-text-field
                       label="username"
@@ -215,8 +257,12 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="white " 
-                      style="background: #FF4742; padding: 2rem" text @click="dialog3 = false">
+                    <v-btn
+                      color="white "
+                      style="background: #ff4742; padding: 2rem"
+                      text
+                      @click="dialog3 = false"
+                    >
                       Login
                     </v-btn>
                   </v-card-actions>
@@ -254,7 +300,7 @@ export default {
   }),
 };
 </script>
-<style>
+<style scoped>
 * {
   color: white;
 }
@@ -266,7 +312,7 @@ export default {
 .buttons {
   margin-top: -20rem;
 }
-.button_login:hover{
+.button_login:hover {
   color: #232344;
 }
 .main-wrapper {

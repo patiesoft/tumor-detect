@@ -5,7 +5,7 @@
     class="register-height gradient-background-color"
   >
     <v-col cols="12">
-      <h1 class="text-center text-h3 font-weight-black">Patient Register</h1>
+      <h1 class="text-center text-h3 font-weight-black" >Patient Registration</h1>
     </v-col>
 
     <v-progress-circular
