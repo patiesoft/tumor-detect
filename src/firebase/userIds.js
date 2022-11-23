@@ -1,24 +1,24 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "./configuration";
+// import { doc, getDoc, updateDoc } from "firebase/firestore";
+// import { db } from "./configuration";
 
-const generatePatientID = async () => {
+async function generatePatientID() {
   console.log("Hey");
-  let patientCount = 0;
-  const indexPath = "Index/ids";
-  const documentReference = doc(db, indexPath);
-  const documentSnapshot = await getDoc(documentReference);
+  // let patientCount = 0;
+  // const indexPath = "Index/ids";
+  // const documentReference = doc(db, indexPath);
+  // const documentSnapshot = await getDoc(documentReference);
 
-  if (documentSnapshot.exists()) {
-    patientCount = documentSnapshot.data().patientCount;
-    await updateDoc(documentReference, {
-      patientCount: patientCount++,
-    });
-    return patientCount;
-  }
-  await updateDoc(documentReference, {
-    patientCount: patientCount++,
-  });
+  // if (documentSnapshot.exists()) {
+  //   patientCount = documentSnapshot.data().patientCount;
+  //   await updateDoc(documentReference, {
+  //     patientCount: patientCount++,
+  //   });
+  //   return patientCount;
+  // }
+  // await updateDoc(documentReference, {
+  //   patientCount: patientCount++,
+  // });
   return 1;
-};
+}
 
 export { generatePatientID };

@@ -4,6 +4,10 @@
     align="center"
     class="register-height gradient-background-color"
   >
+    <v-col cols="12">
+      <h1 class="text-center text-h3 font-weight-black">Patient Register</h1>
+    </v-col>
+
     <v-progress-circular
       :size="50"
       color="primary"
@@ -13,11 +17,6 @@
     >
     <v-card elevation="2" min-width="50vw" class="py-2" v-else>
       <v-row class="mx-1 my">
-        <v-col cols="12">
-          <h1 class="text-center text-h3 font-weight-regular">
-            Patient Register
-          </h1>
-        </v-col>
         <v-col>
           <v-text-field label="Name" outlined v-model="name"></v-text-field>
         </v-col>
@@ -62,7 +61,12 @@
 
       <v-row class="mx-1">
         <v-col>
-          <v-text-field label="Email" outlined v-model="email"></v-text-field>
+          <v-text-field
+            label="Email"
+            outlined
+            v-model="email"
+            type="email"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row class="mx-1">
@@ -75,15 +79,6 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <!-- <v-row class="mx-1">
-          <v-col>
-            <v-text-field
-              label="Confirm Password"
-              outlined
-              v-model="confirmPassword"
-            ></v-text-field>
-          </v-col>
-        </v-row>-->
       <v-divider />
       <v-row class="mt-1 mb-2" justify="center">
         <v-col class="d-flex justify-center">
@@ -149,21 +144,25 @@ export default {
   methods: {
     register() {
       if (this.canRegister) {
+        console.log("Can Register");
         return generatePatientID().then((res) => {
-          registerPatient({
+          console.log(res);
+          return registerPatient({
             name: this.name,
             surname: this.surname,
             gender: this.gender,
-            phoneNumber: this.phoneNumber,
+            phone: this.phoneNumber,
             password: this.password,
             age: this.age,
             email: this.email,
             pinCode: this.pinCode,
-            patientID: res.data.patientID,
+            patientID: res,
+          }).then(() => {
+            this.$router.push("/patient");
           });
         });
       }
-      return;
+      alert("Cannot Register, Missing Fields");
     },
   },
 };

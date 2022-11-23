@@ -14,9 +14,34 @@ import {
   query,
   where,
   getDocs,
+  getDoc,
+  doc,
+  updateDoc,
+  setDoc,
 } from "firebase/firestore";
 
 import { auth, db } from "./configuration";
+
+const generatePatientID = async () => {
+  let patientID = 0;
+  const patientIDCountPath = "Index/index";
+  const documentReference = doc(db, patientIDCountPath);
+  const documentSnapshot = await getDoc(documentReference);
+
+  if (documentSnapshot.exists()) {
+    patientID = documentSnapshot.data().patientID;
+    patientID++;
+    await updateDoc(documentReference, {
+      patientID,
+    });
+    return patientID;
+  }
+  patientID++;
+  await setDoc(documentReference, {
+    patientID,
+  });
+  return patientID;
+};
 
 const registerDoctor = async ({
   username,
@@ -58,6 +83,7 @@ const registerDoctor = async ({
     experience: experience.toLowerCase(),
     email: email.toLowerCase(),
     phone,
+    uid: user.uid,
   });
 };
 
@@ -97,6 +123,7 @@ const registerTechnician = async ({
     username: username.toLowerCase(),
     email: email.toLowerCase(),
     phone,
+    uid: user.uid,
   });
 };
 
@@ -106,6 +133,7 @@ const registerPatient = async ({
   gender,
   pinCode,
   dateOfBirth,
+  age,
   phone,
   email,
   password,
@@ -116,6 +144,7 @@ const registerPatient = async ({
     surname,
     gender,
     pinCode,
+    age,
     dateOfBirth,
     phone,
     email,
@@ -146,11 +175,13 @@ const registerPatient = async ({
     name: name.toLowerCase(),
     surname: surname.toLowerCase(),
     gender: gender.toLowerCase(),
-    dateOfBirth: dateOfBirth.toLowerCase(),
+    age,
+    //dateOfBirth: dateOfBirth.toLowerCase(),
     pinCode: pinCode.toLowerCase(),
     email: email.toLowerCase(),
     phone,
-    patientID,
+    patientID: `P${patientID + 100}`,
+    uid: user.uid,
   });
   return new Promise((resolve) => {
     const unsubscribe = onSnapshot(patientRef, (doc) => {
@@ -240,4 +271,11 @@ const logout = async () => {
   }
 };
 
-export { registerPatient, registerDoctor, registerTechnician, login, logout };
+export {
+  registerPatient,
+  registerDoctor,
+  registerTechnician,
+  login,
+  logout,
+  generatePatientID,
+};

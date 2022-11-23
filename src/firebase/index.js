@@ -1,6 +1,11 @@
-import { registerDoctor, login, logout, registerPatient } from "./auth";
+import {
+  registerDoctor,
+  login,
+  logout,
+  registerPatient,
+  generatePatientID,
+} from "./auth";
 import { auth, db } from "./configuration";
-import { generatePatientID } from "./userIds";
 
 export {
   registerDoctor,

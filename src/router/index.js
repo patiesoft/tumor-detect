@@ -11,6 +11,11 @@ const routes = [
     component: HomeView,
   },
   {
+    path: "/patient-register",
+    name: "home",
+    component: () => import("../views/RegistrationView.vue"),
+  },
+  {
     path: "/technician",
     name: "technician",
     // route level code-splitting
@@ -53,9 +58,9 @@ const routes = [
     ],
   },
   {
-    path: "/patient-register",
+    path: "/patient",
     name: "home",
-    component: () => import("../views/RegistrationView.vue"),
+    component: () => import("../views/patient/Dashboard.vue"),
   },
 ];
 
