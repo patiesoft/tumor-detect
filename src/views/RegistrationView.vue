@@ -173,4 +173,17 @@ export default {
 .register-height {
   height: 100vh;
 }
+  .hover {
+  color: #0000;
+  background: 
+    linear-gradient(90deg,#1095c1 50%,#000 0) 
+    var(--_p,100%)/200% no-repeat;
+  -webkit-background-clip: text;
+          background-clip: text;
+  transition: .4s;
+}
+.hover:hover {
+  --_p: 0%;
+}
+
 </style>

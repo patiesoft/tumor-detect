@@ -113,7 +113,7 @@
 
           <v-list-item @click="patientLogin">
             <v-list-item-title link>
-              <v-dialog v-model="dialog1" persistent max-width="590">
+              <v-dialog v-model="dialog1" persistent max-width="1000">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     outlined
@@ -128,12 +128,12 @@
                 </template>
 
                 <div style="display: flex">
-                  <div><img src="../assets/DoctorLoginImage.jpg" /></div>
+                  <div><img src="../assets/PatientLoginPage.jpeg" width="580"/></div>
                   <div>
                     <v-card>
                       <v-card-title
                         class="text-h5"
-                        style="color: black; padding: 2rem; font-size: 1.5rem"
+                        style="color: black; padding: 3.8rem; font-size: 1.5rem"
                       >
                         Patient Login
                       </v-card-title>
@@ -149,16 +149,18 @@
                           v-model="patientPassword"
                         ></v-text-field>
                       </v-card-text>
-                      <v-card-actions>
+                      <v-card-actions >
                         <v-spacer></v-spacer>
+                        <div style="padding: 6rem 6rem 6rem 6rem">
                         <v-btn
                           color="white "
-                          style="background: #ff4742; padding: 2rem"
+                          style="background: #ff4742;padding:2rem "
                           text
                           @click="dialog1 = false"
+                          
                         >
                           Login
-                        </v-btn>
+                        </v-btn></div>
                       </v-card-actions>
                     </v-card>
                   </div>
