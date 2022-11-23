@@ -1,0 +1,175 @@
+<template>
+  <v-row
+    justify="center"
+    align="center"
+    class="register-height gradient-background-color"
+  >
+    <v-progress-circular
+      :size="50"
+      color="primary"
+      indeterminate
+      v-if="showLoader"
+      >Signing In</v-progress-circular
+    >
+    <v-card elevation="2" min-width="50vw" class="py-2" v-else>
+      <v-row class="mx-1 my">
+        <v-col cols="12">
+          <h1 class="text-center text-h3 font-weight-regular">
+            Patient Register
+          </h1>
+        </v-col>
+        <v-col>
+          <v-text-field label="Name" outlined v-model="name"></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row class="mx-1 my">
+        <v-col>
+          <v-text-field
+            label="Surname"
+            outlined
+            v-model="surname"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row class="mx-1 my">
+        <v-col>
+          <v-text-field
+            label="PinCode"
+            outlined
+            v-model="pinCode"
+          ></v-text-field>
+        </v-col>
+        <v-col>
+          <v-radio-group v-model="gender" row label="Gender">
+            <v-radio label="Male" value="male"></v-radio>
+            <v-radio label="Female" value="female"></v-radio>
+            <v-radio label="Other" value="other"></v-radio>
+          </v-radio-group>
+        </v-col>
+      </v-row>
+      <v-row class="mx-1">
+        <v-col>
+          <v-text-field label="Age" outlined v-model="age"></v-text-field>
+        </v-col>
+        <v-col>
+          <v-text-field
+            label="Phone Number"
+            outlined
+            v-model="phoneNumber"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+
+      <v-row class="mx-1">
+        <v-col>
+          <v-text-field label="Email" outlined v-model="email"></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row class="mx-1">
+        <v-col>
+          <v-text-field
+            label="Password"
+            outlined
+            v-model="password"
+            type="password"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <!-- <v-row class="mx-1">
+          <v-col>
+            <v-text-field
+              label="Confirm Password"
+              outlined
+              v-model="confirmPassword"
+            ></v-text-field>
+          </v-col>
+        </v-row>-->
+      <v-divider />
+      <v-row class="mt-1 mb-2" justify="center">
+        <v-col class="d-flex justify-center">
+          <v-btn
+            x-large
+            outlined
+            rounded
+            color="red"
+            class="font-weight-bold mr-4"
+            @click="$router.go(-1)"
+            ><v-icon> mdi-arrow-left </v-icon>Back</v-btn
+          >
+          <v-btn
+            x-large
+            outlined
+            rounded
+            color="#AB47BC"
+            class="font-weight-bold"
+            @click="register"
+            ><v-icon> mdi-lead-pencil </v-icon>Register</v-btn
+          >
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-row>
+</template>
+<script>
+//import FooterComponent from "../components/FooterComponent.vue";
+import { registerPatient, generatePatientID } from "../firebase/auth.js";
+export default {
+  name: "RegistrationView",
+  data: () => ({
+    showLoader: false,
+    registrationType: "Passenger",
+    name: "",
+    surname: "",
+    gender: "",
+    phoneNumber: "",
+    pinCode: "",
+    password: "",
+    age: "",
+    email: "",
+  }),
+  computed: {
+    canRegister() {
+      return (
+        this.name !== "" &&
+        this.surname !== "" &&
+        this.gender !== "" &&
+        this.phoneNumber !== "" &&
+        this.password !== "" &&
+        this.age !== "" &&
+        this.email !== "" &&
+        this.pinCode !== ""
+      );
+    },
+  },
+
+  /* mounted() { */
+  /*   console.log("checking set email"); */
+  /*   if (!this.$store.getters.getSetEmail) this.$router.push("/"); */
+  /* }, */
+  methods: {
+    register() {
+      if (this.canRegister) {
+        return generatePatientID().then((res) => {
+          registerPatient({
+            name: this.name,
+            surname: this.surname,
+            gender: this.gender,
+            phoneNumber: this.phoneNumber,
+            password: this.password,
+            age: this.age,
+            email: this.email,
+            pinCode: this.pinCode,
+            patientID: res.data.patientID,
+          });
+        });
+      }
+      return;
+    },
+  },
+};
+</script>
+<style>
+.register-height {
+  height: 100vh;
+}
+</style>

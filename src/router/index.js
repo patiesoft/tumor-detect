@@ -52,6 +52,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/patient-register",
+    name: "home",
+    component: () => import("../views/RegistrationView.vue"),
+  },
 ];
 
 const router = new VueRouter({

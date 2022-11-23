@@ -101,20 +101,31 @@ const registerTechnician = async ({
 };
 
 const registerPatient = async ({
-  username,
   name,
   surname,
   gender,
-  zipCode,
+  pinCode,
   dateOfBirth,
   phone,
   email,
   password,
+  patientID,
 }) => {
+  console.log({
+    name,
+    surname,
+    gender,
+    pinCode,
+    dateOfBirth,
+    phone,
+    email,
+    password,
+    patientID,
+  });
   //1. Checking if the username is unique
   let qquery = query(
     collection(db, "Patients"),
-    where("username", "==", username)
+    where("patientID", "==", patientID)
   );
 
   let querySnapshot = await getDocs(qquery);
@@ -136,9 +147,10 @@ const registerPatient = async ({
     surname: surname.toLowerCase(),
     gender: gender.toLowerCase(),
     dateOfBirth: dateOfBirth.toLowerCase(),
-    zipCode: zipCode.toLowerCase(),
+    pinCode: pinCode.toLowerCase(),
     email: email.toLowerCase(),
     phone,
+    patientID,
   });
   return new Promise((resolve) => {
     const unsubscribe = onSnapshot(patientRef, (doc) => {

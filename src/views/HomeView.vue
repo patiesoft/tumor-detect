@@ -9,8 +9,11 @@
     >
     <v-col cols="8" class="d-flex justify-space-around align-center buttons"
       ><v-btn
+       
         x-large
+       
         outlined
+       
         class="text-h4 font-weight-regular"
         style="
               background: #ff4742;
@@ -20,6 +23,7 @@
               padding: 3rem;
               font-size: 1.6rem;
               color: white;"
+        @click="$router.push('/patient-register')"
         >Register</v-btn
       >
       <v-menu bottom left offset-y>
@@ -262,7 +266,7 @@ export default {
 .buttons {
   margin-top: -20rem;
 }
-.button_login:hover: {
+.button_login:hover{
   color: #232344;
 }
 .main-wrapper {
