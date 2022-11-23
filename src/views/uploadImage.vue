@@ -3,36 +3,33 @@
     <p style="color: black; font-size: 5rem; font-weight: 300">
       Upload the MRI Image
     </p>
-    <div style=" box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    <div
+      style="
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
           rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-          rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
-    <v-row
-      no-gutters
-      justify="center"
-      align="center"
-      style="padding:4rem;
-       
+          rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
       "
     >
-      <v-col cols="8">
-        <v-text-field
-          outlined
-          rounded
-          label="Patient Username"
-          v-model="name"
-          style="border-radius: 1rem; "
-        ></v-text-field>
-      </v-col>
-      <v-col cols="8">
-        <v-text-field
-          rounded
-          outlined
-          label="Doctor Username"
-           style="border-radius: 1rem "
-          v-model="surname"
-        ></v-text-field>
-      </v-col>
-    </v-row>
+      <v-row no-gutters justify="center" align="center" style="padding: 4rem">
+        <v-col cols="8">
+          <v-text-field
+            outlined
+            rounded
+            label="Patient Username"
+            v-model="name"
+            style="border-radius: 1rem"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="8">
+          <v-text-field
+            rounded
+            outlined
+            label="Doctor Username"
+            style="border-radius: 1rem"
+            v-model="surname"
+          ></v-text-field>
+        </v-col>
+      </v-row>
     </div>
     <v-row no-gutters justify="center" align="center">
       <v-col cols="8">
@@ -41,12 +38,17 @@
           label="Select Image"
           accept="image/*"
           @change="selectImage"
-        
         ></v-file-input>
       </v-col>
 
       <v-col cols="4" class="pl-2">
-        <v-btn color="success" dark small @click="upload"  style="padding:1.5rem">
+        <v-btn
+          color="success"
+          dark
+          small
+          @click="upload"
+          style="padding: 1.5rem"
+        >
           Upload
           <v-icon right dark>mdi-cloud-upload</v-icon>
         </v-btn>

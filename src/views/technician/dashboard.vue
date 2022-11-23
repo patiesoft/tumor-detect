@@ -4,8 +4,9 @@
   </v-container>
 </template>
 <script>
+/* import NavBar from "../../components/navbar.vue"; */
 export default {
   name: "TechnicianDashboard",
-  components: {},
+  /* components: { NavBar }, */
 };
 </script>
