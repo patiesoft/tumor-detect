@@ -59,8 +59,30 @@ const routes = [
   },
   {
     path: "/patient",
-    name: "home",
+    name: "patient-landing-page",
     component: () => import("../views/patient/Dashboard.vue"),
+  },
+  {
+    path: "/doctor",
+    name: "doctor-landing-page",
+    component: () => import("../views/doctor/Dashboard.vue"),
+    children: [
+      {
+        path: "",
+        name: "in-review",
+        component: () => import("../views/doctor/inReview.vue"),
+      },
+      {
+        path: "review",
+        name: "in-review",
+        component: () => import("../views/doctor/inReview.vue"),
+      },
+      {
+        path: "patient-history",
+        name: "patient-history",
+        component: () => import("../views/doctor/patientHistory.vue"),
+      },
+    ],
   },
 ];
 

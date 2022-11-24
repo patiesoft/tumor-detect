@@ -9,12 +9,14 @@ export default new Vuex.Store({
     patientUnsubscribe: null,
     doctorUnsubscribe: null,
     adminUnsubscribe: null,
+    userDocumentSnapshot: null,
   },
   getters: {
     getPatientUnsubscribe: (state) => state.patientUnsubscribe,
     getDoctorUnsubscribe: (state) => state.doctorUnsubscribe,
     getAdminUnsubscribe: (state) => state.adminUnsubscribe,
     getUserCredentials: (state) => state.userCredential,
+    getUserDocumentSnapshot: (state) => state.userDocumentSnapshot,
     // getUID: (state, getters) => getters.getUserCredentials.uid,
   },
   mutations: {
@@ -27,6 +29,9 @@ export default new Vuex.Store({
     SET_ADMIN_UNSUBSCRIBE(state, unsubcribe) {
       state.adminUnsubscribe = unsubcribe;
     },
+    SET_USER_DOCUMENT_SNAPSHOT(state, unsubcribe) {
+      state.adminUnsubscribe = unsubcribe;
+    },
   },
   actions: {
     setUnsubscribe({ commit }, { unsubscribe, type }) {
@@ -37,6 +42,9 @@ export default new Vuex.Store({
       if (type == "admin") return commit("SET_ADMIN_UNSUBSCRIBE", unsubscribe);
 
       throw new Error("Unknow unsubscribe type");
+    },
+    setUserDocumentSnapshot({ commit }, documentSnapshot) {
+      return commit("SET_USER_DOCUMENT_SNAPSHOT", documentSnapshot);
     },
   },
   modules: {},

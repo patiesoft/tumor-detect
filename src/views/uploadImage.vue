@@ -15,8 +15,8 @@
           <v-text-field
             outlined
             rounded
-            label="Patient Username"
-            v-model="name"
+            label="Patient ID"
+            v-model="patientID"
             style="border-radius: 1rem"
           ></v-text-field>
         </v-col>
@@ -24,9 +24,9 @@
           <v-text-field
             rounded
             outlined
-            label="Doctor Username"
+            label="Doctor ID"
             style="border-radius: 1rem"
-            v-model="surname"
+            v-model="doctorID"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -91,7 +91,12 @@
       {{ message }}
     </v-alert>
 
-    <v-card class="mx-auto" max-width="344" outlined v-if="modelResult">
+    <!--<v-card
+      class="mx-auto"
+      max-width="344"
+      outlined
+      v-if="modelResult && patient && doctor"
+    >
       <v-list-item three-line>
         <v-list-item-content>
           <div class="text-overline mb-4">Prediction Result</div>
@@ -110,6 +115,7 @@
           <v-container v-else>
             <v-list-item-subtitle>No Tumor</v-list-item-subtitle>
           </v-container>
+          <v-divider />
         </v-list-item-content>
 
         <v-list-item-avatar tile size="80" color="grey"
@@ -120,7 +126,7 @@
       <v-card-actions>
         <v-btn outlined rounded text> Send to Doctor </v-btn>
       </v-card-actions>
-    </v-card>
+    </v-card> -->
 
     <v-card v-if="imageInfos.length > 0" class="mx-auto">
       <v-list>
@@ -138,18 +144,19 @@
 import uploadService from "../services/uploadFilesService.js";
 //Have to use the patient username to get patient data
 //Have to use the doctor username to get doctor data
+import {
+  getDoctorByDoctorID,
+  getPatientByPatientID,
+  sendInReviewToDoctor,
+} from "../firebase";
 export default {
   name: "upload-image",
   data() {
     return {
-      patient: {
-        name: "Phathizwe",
-        surname: "Vilakazi",
-      },
-      doctor: {
-        name: "Rajesh",
-        surname: "Miller",
-      },
+      patient: null,
+      doctor: null,
+      patientID: "",
+      doctorID: "",
       modelResult: undefined,
       width: 300,
       currentImage: undefined,
@@ -164,6 +171,13 @@ export default {
     };
   },
   methods: {
+    findInformations() {
+      return getPatientByPatientID({ patientID: this.patientID }).then(
+        (patient) => {
+          console.log(patient);
+        }
+      );
+    },
     selectImage(image) {
       this.currentImage = image;
       this.previewImage = URL.createObjectURL(this.currentImage);
@@ -171,7 +185,7 @@ export default {
       this.message = "";
     },
 
-    upload() {
+    async upload() {
       if (!this.currentImage) {
         this.message = "Please select an Image!";
         return;
@@ -179,24 +193,30 @@ export default {
 
       this.progress = 0;
 
-      return uploadService
-        .upload(
-          {
-            tumor: this.currentImage,
-          },
-          (event) => {
-            this.progress = Math.round((100 * event.loaded) / event.total);
-          }
-        )
-        .then((res) => {
-          this.modelResult = res.data;
-          this.message = "Picture Uploaded";
-        })
-        .catch((err) => {
-          this.progress = 0;
-          this.message = "Could not upload the image! " + err;
-          this.currentImage = undefined;
-        });
+      const results = await uploadService.upload(
+        { tumor: this.currentImage },
+        (event) => {
+          this.progress = Math.round((100 * event.loaded) / event.total);
+        }
+      );
+
+      this.modelResult = results.data;
+      this.message = "Picture Uploaded";
+
+      const patientDocumentSnapshot = await getPatientByPatientID({
+        patientID: this.patientID,
+      });
+      const doctorDocumentSnapshot = await getDoctorByDoctorID({
+        doctorID: this.doctorID,
+      });
+      this.patient = patientDocumentSnapshot.data();
+      this.doctor = doctorDocumentSnapshot.data();
+      await sendInReviewToDoctor({
+        doctor: doctorDocumentSnapshot.data(),
+        patient: patientDocumentSnapshot.data(),
+        results: results.data,
+      });
+      alert("MRI Scan uploaded to Model and Results sent to Doctor");
     },
   },
 };

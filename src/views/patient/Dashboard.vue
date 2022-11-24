@@ -1,9 +1,8 @@
 <template>
   <v-container>
-    <h1>Patient Dashboard</h1>
+    <div class="text-h3 text-center">Patient Dashboard</div>
   </v-container>
 </template>
-
 <script>
 export default {
   name: "PatientDashboard",

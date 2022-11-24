@@ -43,6 +43,27 @@ const generatePatientID = async () => {
   return patientID;
 };
 
+const generateDoctorID = async () => {
+  let doctorID = 0;
+  const doctorIDCountPath = "Index/index2";
+  const documentReference = doc(db, doctorIDCountPath);
+  const documentSnapshot = await getDoc(documentReference);
+
+  if (documentSnapshot.exists()) {
+    doctorID = documentSnapshot.data().doctorID;
+    doctorID++;
+    await updateDoc(documentReference, {
+      doctorID,
+    });
+    return doctorID;
+  }
+  doctorID++;
+  await setDoc(documentReference, {
+    doctorID,
+  });
+  return doctorID;
+};
+
 const registerDoctor = async ({
   username,
   name,
@@ -54,20 +75,26 @@ const registerDoctor = async ({
   password,
 }) => {
   //Checking that the Doctor username exists
+  const doctorID = await generateDoctorID();
+  console.log({ doctorID });
+
   let qquery = query(
     collection(db, "Doctors"),
-    where("username", "==", username)
+    where("doctorID", "==", doctorID)
   );
 
   let querySnapshot = await getDocs(qquery);
   if (!querySnapshot.empty) throw new Error("Username exists");
 
-  qquery = query(collection(db, "Doctors"), where("email", "==", email));
+  // qquery = query(collection(db, "Doctors"), where("email", "==", email));
 
-  querySnapshot = await getDocs(qquery);
-  if (!querySnapshot.empty) throw new Error("Email exists");
-
-  const { user } = await createUserWithEmailAndPassword(auth, email, password);
+  // querySnapshot = await getDocs(qquery);
+  // if (!querySnapshot.empty) throw new Error("Email exists");
+  const { user } = await createUserWithEmailAndPassword(
+    auth,
+    `D${doctorID + 100}@gmail.com`,
+    password
+  );
 
   updateProfile(user, {
     displayName: `doctor`,
@@ -82,6 +109,7 @@ const registerDoctor = async ({
     specialization: specialization.toLowerCase(),
     experience: experience.toLowerCase(),
     email: email.toLowerCase(),
+    doctorID: `D${doctorID + 100}`,
     phone,
     uid: user.uid,
   });
@@ -132,26 +160,13 @@ const registerPatient = async ({
   surname,
   gender,
   pinCode,
-  dateOfBirth,
   age,
   phone,
   email,
   password,
-  patientID,
 }) => {
-  console.log({
-    name,
-    surname,
-    gender,
-    pinCode,
-    age,
-    dateOfBirth,
-    phone,
-    email,
-    password,
-    patientID,
-  });
   //1. Checking if the username is unique
+  const patientID = await generatePatientID();
   let qquery = query(
     collection(db, "Patients"),
     where("patientID", "==", patientID)
@@ -160,12 +175,16 @@ const registerPatient = async ({
   let querySnapshot = await getDocs(qquery);
   if (!querySnapshot.empty) throw new Error("Username exists");
 
-  qquery = query(collection(db, "Patients"), where("email", "==", email));
+  // qquery = query(collection(db, "Patients"), where("email", "==", email));
 
-  querySnapshot = await getDocs(qquery);
-  if (!querySnapshot.empty) throw new Error("Email exists");
+  // querySnapshot = await getDocs(qquery);
+  // if (!querySnapshot.empty) throw new Error("Email exists");
 
-  const { user } = await createUserWithEmailAndPassword(auth, email, password);
+  const { user } = await createUserWithEmailAndPassword(
+    auth,
+    `P${patientID + 100}@gmail.com`,
+    password
+  );
 
   updateProfile(user, {
     displayName: `patients`,
@@ -192,19 +211,25 @@ const registerPatient = async ({
   });
 };
 
-const login = async ({ email, password, userType }) => {
+const login = async ({ doctorID, patientID, email, password, userType }) => {
   try {
-    const user = await signInWithEmailAndPassword(auth, email, password);
-    const uid = user.user.uid;
-    console.log({ uid });
     if (userType === "patient") {
+      if (!patientID) throw new Error("No patient ID");
+      const user = await signInWithEmailAndPassword(
+        auth,
+        `P${patientID}@gmail.com`,
+        password
+      );
+      const uid = user.user.uid;
+      console.log({ uid });
       const patientsCollectionRef = collection(db, "Patients");
       return new Promise((resolve, reject) => {
         const unsubscribe = onSnapshot(
-          query(patientsCollectionRef, where("uid", "==", uid)),
+          query(patientsCollectionRef, where("patientID", "==", patientID)),
           (querySnapshot) => {
             if (querySnapshot.empty)
               reject("Internal Error, users not properly registered");
+            store.dispatch("setUserDocumentSnapshot", querySnapshot.docs[0]);
             resolve(querySnapshot.docs[0]);
           }
         );
@@ -213,13 +238,22 @@ const login = async ({ email, password, userType }) => {
       });
     }
     if (userType === "doctor") {
+      if (!doctorID) throw new Error("No doctor ID");
+      const user = await signInWithEmailAndPassword(
+        auth,
+        `D${doctorID}@gmail.com`,
+        password
+      );
+      const uid = user.user.uid;
+      console.log({ uid });
       const doctorCollectionRef = collection(db, "Doctors");
       return new Promise((resolve, reject) => {
         const unsubscribe = onSnapshot(
-          query(doctorCollectionRef, where("uid", "==", uid)),
+          query(doctorCollectionRef, where("doctorID", "==", doctorID)),
           (querySnapshot) => {
             if (querySnapshot.empty)
               reject("Internal Error, users not properly registered");
+            store.dispatch("setUserDocumentSnapshot", querySnapshot.docs[0]);
             resolve(querySnapshot.docs[0]);
           }
         );
@@ -229,6 +263,9 @@ const login = async ({ email, password, userType }) => {
       //Have to save the userCredential
     }
     if (userType === "admin") {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      const uid = user.user.uid;
+      console.log({ uid });
       const adminCollectionRef = collection(db, "Admin");
       return new Promise((resolve, reject) => {
         const unsubscribe = onSnapshot(
@@ -236,6 +273,7 @@ const login = async ({ email, password, userType }) => {
           (querySnapshot) => {
             if (querySnapshot.empty)
               reject("Internal Error,Admin has not been registered");
+            store.dispatch("setUserDocumentSnapshot", querySnapshot.docs[0]);
             resolve(querySnapshot.docs[0]);
           }
         );
@@ -244,6 +282,9 @@ const login = async ({ email, password, userType }) => {
       });
     }
     if (userType === "technician") {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      const uid = user.user.uid;
+      console.log({ uid });
       const adminCollectionRef = collection(db, "Technician");
       return new Promise((resolve, reject) => {
         const unsubscribe = onSnapshot(
@@ -251,6 +292,7 @@ const login = async ({ email, password, userType }) => {
           (querySnapshot) => {
             if (querySnapshot.empty)
               reject("Internal Error,Admin has not been registered");
+            store.dispatch("setUserDocumentSnapshot", querySnapshot.docs[0]);
             resolve(querySnapshot.docs[0]);
           }
         );
@@ -261,6 +303,53 @@ const login = async ({ email, password, userType }) => {
   } catch (error) {
     throw new Error(error);
   }
+};
+
+const getPatientByPatientID = async ({ patientID }) => {
+  const patientsCollectionRef = collection(db, "Patients");
+  const qquery = query(
+    patientsCollectionRef,
+    where("patientID", "==", patientID)
+  );
+  const querySnapshot = await getDocs(qquery);
+  if (querySnapshot.empty) {
+    return null;
+  }
+  return querySnapshot.docs[0];
+};
+
+const getDoctorByDoctorID = async ({ doctorID }) => {
+  console.log({ doctorID });
+  const patientsCollectionRef = collection(db, "Doctors");
+  const qquery = query(
+    patientsCollectionRef,
+    where("doctorID", "==", doctorID)
+  );
+  const querySnapshot = await getDocs(qquery);
+  if (querySnapshot.empty) {
+    return null;
+  }
+  console.log(querySnapshot.docs[0].data());
+  return querySnapshot.docs[0];
+};
+
+const getInReview = async ({ doctorID }) => {
+  const qquery = query(
+    collection(db, "In-Reviews"),
+    where("doctor.doctorID", "==", doctorID)
+  );
+  const querySnapshot = await getDocs(qquery);
+  return querySnapshot.docs;
+};
+
+const sendInReviewToDoctor = async ({ doctor, patient, results }) => {
+  const collectionReference = collection(db, "In-Reviews");
+  await addDoc(collectionReference, {
+    patient,
+    doctor,
+    results,
+    reviewed: false,
+  });
 };
 
 const logout = async () => {
@@ -278,4 +367,8 @@ export {
   login,
   logout,
   generatePatientID,
+  getPatientByPatientID,
+  getDoctorByDoctorID,
+  sendInReviewToDoctor,
+  getInReview,
 };

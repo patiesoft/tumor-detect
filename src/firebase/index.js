@@ -4,6 +4,10 @@ import {
   logout,
   registerPatient,
   generatePatientID,
+  getDoctorByDoctorID,
+  getPatientByPatientID,
+  sendInReviewToDoctor,
+  getInReview,
 } from "./auth";
 import { auth, db } from "./configuration";
 
@@ -15,4 +19,8 @@ export {
   db,
   registerPatient,
   generatePatientID,
+  getDoctorByDoctorID,
+  getPatientByPatientID,
+  sendInReviewToDoctor,
+  getInReview,
 };
