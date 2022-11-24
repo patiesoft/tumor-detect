@@ -53,6 +53,7 @@
   </v-container>
 </template>
 <script>
+import { logout } from "../firebase";
 export default {
   name: "NavBar",
   data: () => ({
@@ -60,5 +61,10 @@ export default {
     drawer: false,
     group: null,
   }),
+  methods: {
+    signout() {
+      return logout();
+    },
+  },
 };
 </script>

@@ -7,6 +7,7 @@ import {
 
 import store from "../store";
 
+import router from "../router";
 import {
   addDoc,
   collection,
@@ -360,6 +361,7 @@ const sendInReviewToDoctor = async ({ doctor, patient, results }) => {
 const logout = async () => {
   try {
     await signOut(auth);
+    router.push("/");
   } catch (error) {
     console.log(error);
   }

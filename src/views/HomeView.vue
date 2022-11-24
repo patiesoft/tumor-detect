@@ -71,7 +71,7 @@
                       </v-card-title>
                       <v-card-text>
                         <v-text-field
-                          label="Doctor ID"
+                          label="Username"
                           type="text"
                           v-model="doctorUsername"
                         ></v-text-field>

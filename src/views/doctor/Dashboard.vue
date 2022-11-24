@@ -13,7 +13,7 @@
           <v-list-item>
             <v-list-item-title> Profile</v-list-item-title>
           </v-list-item>
-          <v-list-item>
+          <v-list-item @click="signout">
             <v-list-item-title> logout</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { logout } from "../../firebase";
 export default {
   name: "DoctorDashboard",
   data: () => ({
@@ -66,5 +67,12 @@ export default {
     drawer: false,
     group: null,
   }),
+  methods: {
+    signout() {
+      return logout().then(() => {
+        console.log("logged out");
+      });
+    },
+  },
 };
 </script>
