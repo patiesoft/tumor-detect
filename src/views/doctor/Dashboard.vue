@@ -45,6 +45,12 @@
             </v-list-item-icon>
             <v-list-item-title>Reports</v-list-item-title>
           </v-list-item>
+          <v-list-item @click="$router.go(-1)">
+            <v-list-item-icon>
+              <v-icon>mdi-arrow-left</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Back</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>

@@ -213,6 +213,7 @@ const registerPatient = async ({
 
 const login = async ({ doctorID, patientID, email, password, userType }) => {
   try {
+    console.log({ doctorID, patientID, email, password, userType });
     if (userType === "patient") {
       if (!patientID) throw new Error("No patient ID");
       const user = await signInWithEmailAndPassword(
@@ -239,11 +240,13 @@ const login = async ({ doctorID, patientID, email, password, userType }) => {
     }
     if (userType === "doctor") {
       if (!doctorID) throw new Error("No doctor ID");
+      console.log({ doctorID, password });
       const user = await signInWithEmailAndPassword(
         auth,
-        `D${doctorID}@gmail.com`,
+        `${doctorID}@gmail.com`,
         password
       );
+      console.log("hi");
       const uid = user.user.uid;
       console.log({ uid });
       const doctorCollectionRef = collection(db, "Doctors");
@@ -334,11 +337,13 @@ const getDoctorByDoctorID = async ({ doctorID }) => {
 };
 
 const getInReview = async ({ doctorID }) => {
+  console.log("GET IN REVIEW");
   const qquery = query(
     collection(db, "In-Reviews"),
     where("doctor.doctorID", "==", doctorID)
   );
   const querySnapshot = await getDocs(qquery);
+  console.log("OUT OF INREVIEW");
   return querySnapshot.docs;
 };
 

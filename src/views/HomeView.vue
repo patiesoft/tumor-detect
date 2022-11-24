@@ -45,7 +45,7 @@
           >
         </template>
         <v-list>
-          <v-list-item @click="doctorLogin">
+          <v-list-item>
             <v-list-item-title link>
               <v-dialog v-model="dialog" persistent max-width="1000">
                 <template v-slot:activator="{ on, attrs }">
@@ -71,7 +71,7 @@
                       </v-card-title>
                       <v-card-text>
                         <v-text-field
-                          label="Username"
+                          label="Doctor ID"
                           type="text"
                           v-model="doctorUsername"
                         ></v-text-field>
@@ -98,7 +98,7 @@
                             color="white "
                             style="background: #ff4742; padding: 2rem"
                             text
-                            @click="dialog = false"
+                            @click="doctorLogin"
                           >
                             login
                           </v-btn>
@@ -128,7 +128,9 @@
                 </template>
 
                 <div style="display: flex">
-                  <div><img src="../assets/PatientLoginPage.jpeg" width="580"/></div>
+                  <div>
+                    <img src="../assets/PatientLoginPage.jpeg" width="580" />
+                  </div>
                   <div>
                     <v-card>
                       <v-card-title
@@ -149,18 +151,18 @@
                           v-model="patientPassword"
                         ></v-text-field>
                       </v-card-text>
-                      <v-card-actions >
+                      <v-card-actions>
                         <v-spacer></v-spacer>
                         <div style="padding: 6rem 6rem 6rem 6rem">
-                        <v-btn
-                          color="white "
-                          style="background: #ff4742;padding:2rem "
-                          text
-                          @click="dialog1 = false"
-                          
-                        >
-                          Login
-                        </v-btn></div>
+                          <v-btn
+                            color="white "
+                            style="background: #ff4742; padding: 2rem"
+                            text
+                            @click="dialog1 = false"
+                          >
+                            Login
+                          </v-btn>
+                        </div>
                       </v-card-actions>
                     </v-card>
                   </div>
@@ -168,7 +170,7 @@
               </v-dialog>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item @click="technicianLogin">
+          <v-list-item>
             <v-list-item-title link>
               <v-dialog v-model="dialog2" persistent max-width="590">
                 <template v-slot:activator="{ on, attrs }">
@@ -212,7 +214,7 @@
                           color="white "
                           style="background: #ff4742; padding: 2rem"
                           text
-                          @click="dialog2 = false"
+                          @click="technicianLogin"
                         >
                           Login
                         </v-btn>
@@ -223,7 +225,7 @@
               </v-dialog>
             </v-list-item-title>
           </v-list-item>
-          <v-list-item @click="admin">
+          <v-list-item @click="adminLogin">
             <v-list-item-title link>
               <v-dialog v-model="dialog3" persistent max-width="590">
                 <template v-slot:activator="{ on, attrs }">
@@ -283,6 +285,7 @@
   </v-row>
 </template>
 <script>
+import { login } from "../firebase";
 export default {
   name: "LandingPage",
   components: {},
@@ -300,6 +303,23 @@ export default {
     adminPassword: "",
     adminUsername: "",
   }),
+  methods: {
+    doctorLogin() {
+      console.log("hey");
+      return login({
+        doctorID: this.doctorUsername,
+        password: this.doctorPassword,
+        userType: "doctor",
+      }).then(() => {
+        this.$router.push("/doctor");
+      });
+    },
+    async patientLogin() {},
+    async adminLogin() {},
+    technicianLogin() {
+      this.$router.push("/technician");
+    },
+  },
 };
 </script>
 <style scoped>

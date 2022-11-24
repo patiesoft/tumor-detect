@@ -29,8 +29,8 @@ export default new Vuex.Store({
     SET_ADMIN_UNSUBSCRIBE(state, unsubcribe) {
       state.adminUnsubscribe = unsubcribe;
     },
-    SET_USER_DOCUMENT_SNAPSHOT(state, unsubcribe) {
-      state.adminUnsubscribe = unsubcribe;
+    SET_USER_DOCUMENT_SNAPSHOT(state, doc) {
+      state.userDocumentSnapshot = doc;
     },
   },
   actions: {
@@ -44,6 +44,7 @@ export default new Vuex.Store({
       throw new Error("Unknow unsubscribe type");
     },
     setUserDocumentSnapshot({ commit }, documentSnapshot) {
+      console.log("hhhhhhhhhhhhhhhh");
       return commit("SET_USER_DOCUMENT_SNAPSHOT", documentSnapshot);
     },
   },
