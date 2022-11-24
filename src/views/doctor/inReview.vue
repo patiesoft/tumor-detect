@@ -72,7 +72,7 @@
   </v-row>
 </template>
 <script>
-import { getInReview } from "../../firebase";
+import { getInReview, doctorReviewScan } from "../../firebase";
 export default {
   name: "InReview",
   data: () => ({
@@ -89,6 +89,9 @@ export default {
     async getInReviewDocs() {
       const docs = await getInReview({ doctorID: this.doctorID });
       this.inReview = docs.map((d) => d.data());
+    },
+    submit(id) {
+      return doctorReviewScan({ id, observations: this.observations });
     },
   },
   mounted() {

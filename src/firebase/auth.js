@@ -351,10 +351,24 @@ const getInReview = async ({ doctorID }) => {
 const sendInReviewToDoctor = async ({ doctor, patient, results }) => {
   const collectionReference = collection(db, "In-Reviews");
   await addDoc(collectionReference, {
+    id: new Date.now(),
     patient,
     doctor,
     results,
     reviewed: false,
+  });
+};
+
+const doctorReviewScan = async ({ id, observation }) => {
+  const querySnapshot = await getDocs(
+    query(collection(db, "In-Reviews"), where("id", "==", id))
+  );
+  const documentSnapshot = querySnapshot.docs[0];
+  const documentReference = documentSnapshot.ref;
+
+  await updateDoc(documentReference, {
+    observation,
+    reviewed: true,
   });
 };
 
@@ -378,4 +392,5 @@ export {
   getDoctorByDoctorID,
   sendInReviewToDoctor,
   getInReview,
+  doctorReviewScan,
 };
